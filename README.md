@@ -125,7 +125,7 @@ Get-EventLog -LogName Security | Where-Object {$_.EventID -eq 4720} | Select-Obj
 
 **Convert evtx to csv**
 
-```
+```powershell
 Get-WinEvent -Path .\Microsoft-Windows-Sysmon%4Operational.evtx | Export-CSV foo.csv
 ```
 
@@ -158,7 +158,7 @@ Expand-Archive -Path <SourcePathofZipFile> -DestinationPath <DestinationPath>
 
 **Search sysmon logs** 
 
-```
+```powershell
 $keyword = "blah"; $logName = "Microsoft-Windows-Sysmon/Operational"; $xpathQuery = "*[System[(EventID=1)]] and *[EventData[Data and contains(.,'$keyword')]]"; Get-WinEvent -LogName $logName -FilterXPath $xpathQuery
 ```
 
@@ -219,7 +219,7 @@ Stop-Process -Name "ProcessName" -Force
 
 **Generate hashes of all running processes** 
 
-```
+```powershell
 Get-Process | ForEach-Object {
     try {
         $hash = Get-FileHash $_.Path -Alpowershellrithm SHA256
@@ -273,7 +273,7 @@ Read-Host -Prompt "Enter the encryption passphrase" -AsSecureString | ConvertFro
 
 **Write to event log** 
 
-```
+```powershell
 New-EventLog -LogName Microsoft-Windows-Sysmon/Operational -Source 'sysmontester'
 
 Write-EventLog -LogName 'Microsoft-Windows-Sysmon/Operational' -EventID 2001 -EntryType Information -Source 'Microsoft-Windows-Sysmon' -Message 'content'
@@ -331,7 +331,7 @@ $fileSizeInMB = 10; $filePath = "$PWD\file.txt"; $data = [byte[]]::new($fileSize
 
 **Linux cut command**
 
-```
+```powershell
 Cut function powershell
 
     function cut {
@@ -346,4 +346,16 @@ Cut function powershell
         ($inputobject -split $delimiter)[$field] }
     }
     }
+```
+
+Work with Json Powershell
+
+```powershell
+$content = Get-Content -Raw -Path "data.json" | ConvertFrom-Json
+$content | Where-Object{ $_.tags.key -eq "cat" -and $_.tags.value -eq "10"}
+$content.id or $content.name
+
+Example
+measure the number of objects having Ali in collaborators
+$content.collaborators| sls -Pattern Ali| Measure-Object -Line
 ```
